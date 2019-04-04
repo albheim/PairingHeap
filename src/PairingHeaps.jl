@@ -1,17 +1,8 @@
 module PairingHeaps
 
-    import Base: ==, length, isempty, iterate,
-                 show, dump,
-                 in, haskey, keys, merge, copy, cat, collect,
-                 push!, pop!, pushfirst!, popfirst!, insert!, lastindex,
-                 union!, delete!, similar, sizehint!, empty, append!,
-                 isequal, hash, map, filter, reverse,
-                 first, last, eltype, getkey, values, sum,
-                 merge, merge!, lt, Ordering, ForwardOrdering, Forward,
-                 ReverseOrdering, Reverse, Lt,
-                 isless, union, intersect, symdiff, setdiff, issubset,
-                 searchsortedfirst, searchsortedlast, in,
-                 eachindex, keytype, valtype, minimum, maximum
+    import Base: ==, length, isempty, show, 
+                 push!, pop!, eltype, merge!,
+                 promote_rule
 
 export PairingHeap,
 	   PairingMinHeap,
@@ -22,8 +13,6 @@ export PairingHeap,
 	   extract_all!,
 	   top,
 	   isempty
-
-import Base: promote_rule, length
 
 # Pairing heap (non-mutable)
 
@@ -148,6 +137,13 @@ PairingMaxHeap(xs::AbstractVector{T}) where T = PairingMaxHeap{T}(xs)
 
 @inline isempty(h::PairingHeap) = length(h) == 0
 
+"""
+    push!(h::PairingHeap, v)
+
+Push the element v on the heap.
+
+Returns the heap.
+"""
 function push!(h::PairingHeap{T}, v) where {T}
     new = PairingHeapNode{T}(v, pairing_nil(T), pairing_nil(T))
     h.root = _pairing_heap_merge!(h.comparer, h.root, new)
@@ -155,6 +151,11 @@ function push!(h::PairingHeap{T}, v) where {T}
     h
 end
 
+"""
+    merge!(a::PairingHeap, b::PairingHeap)
+
+Returns a heap that is a and b combined. 
+"""
 function merge!(a::PairingHeap{T, Comp}, b::PairingHeap{T, Comp}) where {Comp, T}
 	tmp = PairingHeap{promote_type(T1, T2), Comp}()
 	tmp.root = _pairing_heap_merge!(Comp(), a.root, b.root)
@@ -169,6 +170,11 @@ Returns the element at the top of the heap `h`.
 """
 @inline top(h::PairingHeap) = h.root.value
 
+"""
+    pop!(h::PairingHeap)
+
+Returns the element at the top of the heap `h` and removes it.
+"""
 function pop!(h::PairingHeap{T}) where T
     # extract root
     root = h.root
@@ -183,9 +189,14 @@ function pop!(h::PairingHeap{T}) where T
     v
 end
 
-function extract_all!(h::PairingHeap{VT}) where VT
+"""
+	extract_all!(h::PairingHeap)
+
+Returns a Vector with all elements popped from the heap.
+"""
+function extract_all!(h::PairingHeap{T}) where T
     n = length(h)
-    r = Vector{VT}(undef, n)
+    r = Vector{T}(undef, n)
     for i = 1 : n
         r[i] = pop!(h)
     end
