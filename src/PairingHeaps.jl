@@ -1,5 +1,18 @@
 module PairingHeaps
 
+    import Base: ==, length, isempty, iterate,
+                 show, dump,
+                 in, haskey, keys, merge, copy, cat, collect,
+                 push!, pop!, pushfirst!, popfirst!, insert!, lastindex,
+                 union!, delete!, similar, sizehint!, empty, append!,
+                 isequal, hash, map, filter, reverse,
+                 first, last, eltype, getkey, values, sum,
+                 merge, merge!, lt, Ordering, ForwardOrdering, Forward,
+                 ReverseOrdering, Reverse, Lt,
+                 isless, union, intersect, symdiff, setdiff, issubset,
+                 searchsortedfirst, searchsortedlast, in,
+                 eachindex, keytype, valtype, minimum, maximum
+
 export PairingHeap,
 	   PairingMinHeap,
 	   PairingMaxHeap,
@@ -8,12 +21,11 @@ export PairingHeap,
 	   pop!,
 	   extract_all!,
 	   top,
-	   length,
 	   isempty
 
+import Base: promote_rule, length
 
 # Pairing heap (non-mutable)
-
 
 mutable struct PairingHeapNil{T}
 end
@@ -25,8 +37,6 @@ mutable struct PairingHeapNode{T}
 end
 
 const PairingHeapLink{T} = Union{PairingHeapNil{T}, PairingHeapNode{T}}
-
-import Base: promote_rule
 
 promote_rule(::Type{PairingHeapNode{T1}}, ::Type{PairingHeapNode{T2}}) where {T1, T2} = promote_type(T1, T2)
 
@@ -109,7 +119,7 @@ compare(c::GreaterThan, x, y) = x > y
 #
 #################################################
 
-mutable struct PairingHeap{T,Comp} <: AbstractHeap{T}
+mutable struct PairingHeap{T,Comp} #<: AbstractHeap{T}
     comparer::Comp
     root::PairingHeapLink{T}
     length::Int
@@ -162,8 +172,8 @@ Returns the element at the top of the heap `h`.
 function pop!(h::PairingHeap{T}) where T
     # extract root
     root = h.root
-	if typeof(root) == PairingHeapNil
-		println("Error, trying to pop an empty heap.")
+	if typeof(root) == PairingHeapNil{T}
+		error("Error, trying to pop an empty heap.")
 		return 
 	end
     v = root.value
@@ -173,7 +183,7 @@ function pop!(h::PairingHeap{T}) where T
     v
 end
 
-function extract_all!(h::AbstractHeap{VT}) where VT
+function extract_all!(h::PairingHeap{VT}) where VT
     n = length(h)
     r = Vector{VT}(undef, n)
     for i = 1 : n

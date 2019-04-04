@@ -1,6 +1,7 @@
-authors = ["Albin Heimerson <albin.heimerson@control.lth.se>"]
 name = "PairingHeaps"
 uuid = "a20987b0-56bc-11e9-38e2-93556242d4d3"
+authors = ["Albin Heimerson <albin.heimerson@control.lth.se>"]
 version = "0.1.0"
 
 [deps]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

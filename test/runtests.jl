@@ -1,11 +1,7 @@
-using DataStructures
+using PairingHeaps
 using Test
-using Random
-using Serialization
 
-import DataStructures: IntSet
-
-@test [] == detect_ambiguities(Base, Core, DataStructures)
+@test [] == detect_ambiguities(Base, Core, PairingHeaps)
 
 @testset "PairingHeap" begin
 
