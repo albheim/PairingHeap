@@ -1,5 +1,5 @@
 authors = ["Albin Heimerson <albin.heimerson@control.lth.se>"]
-name = "PairingHeap"
+name = "PairingHeaps"
 uuid = "a20987b0-56bc-11e9-38e2-93556242d4d3"
 version = "0.1.0"
 

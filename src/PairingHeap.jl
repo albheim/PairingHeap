@@ -1,4 +1,4 @@
-module PairingHeap
+module PairingHeaps
 
 export PairingHeap,
 	   PairingMinHeap,
@@ -6,6 +6,7 @@ export PairingHeap,
 	   push!,
 	   merge!,
 	   pop!,
+	   extract_all!,
 	   top,
 	   length,
 	   isempty
@@ -93,6 +94,15 @@ function _make_pairing_heap(comp::Comp, ty::Type{T}, xs) where {Comp,T}
 end
 
 
+struct LessThan
+end
+
+struct GreaterThan
+end
+
+compare(c::LessThan, x, y) = x < y
+compare(c::GreaterThan, x, y) = x > y
+
 #################################################
 #
 #   heap type and constructors
@@ -161,6 +171,15 @@ function pop!(h::PairingHeap{T}) where T
 	h.root = _pairing_heap_merge_pairs!(h.comparer, root.subheap)
 	h.length -= 1
     v
+end
+
+function extract_all!(h::AbstractHeap{VT}) where VT
+    n = length(h)
+    r = Vector{VT}(undef, n)
+    for i = 1 : n
+        r[i] = pop!(h)
+    end
+    r
 end
 
 end # module
