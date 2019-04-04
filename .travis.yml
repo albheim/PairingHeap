@@ -1,0 +1,13 @@
+language: julia
+julia:
+    - 1.0
+    - 1.1
+    - nightly
+matrix:
+    allow_failures:
+    - julia: nightly
+    fast_finish: true
+notifications:
+    email: false
+after_success:
+    - julia -e 'using Pkg; import PairingHeap; cd(joinpath(dirname(pathof(PairingHeap)), "..")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
