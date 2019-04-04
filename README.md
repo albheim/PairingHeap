@@ -1,5 +1,8 @@
 # PairingHeap.jl
 
+[![Build Status](https://travis-ci.org/JuliaControl/ControlSystems.jl.svg?branch=master)](https://travis-ci.org/albheim/PairingHeaps.jl)
+[![codecov.io Code Coverage](https://img.shields.io/codecov/c/github/dwyl/hapi-auth-jwt2.svg?maxAge=2592000)](https://codecov.io/gh/albheim/PairingHeaps.jl?branch=master)
+
 Implementing a Pairing Heap, see https://en.wikipedia.org/wiki/Pairing_heap, according to the interface defined in http://juliacollections.github.io/DataStructures.jl/latest/heaps.html
 
 # Installation
