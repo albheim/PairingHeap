@@ -1,6 +1,8 @@
 using PairingHeaps
 using Test
 
+import PairingHeaps: pairing_isnil
+
 @test [] == detect_ambiguities(Base, Core, PairingHeaps)
 
 @testset "PairingHeap" begin
@@ -42,6 +44,7 @@ using Test
                 @testset "pop! hmin" begin
                     @test isequal(extract_all!(hmin), [1, 2, 3, 4, 7, 8, 9, 10, 14, 16])
                     @test isempty(hmin)
+                    @test_throws ArgumentError pop!(hmin)
                 end
                 
             end
@@ -63,6 +66,7 @@ using Test
                 @testset "pop! hmax" begin
                     @test isequal(extract_all!(hmax), [16, 14, 10, 9, 8, 7, 4, 3, 2, 1])
                     @test isempty(hmax)
+                    @test_throws ArgumentError pop!(hmax)
                 end                
             end
         end        
@@ -104,6 +108,27 @@ using Test
 
         @test isequal(extract_all!(h), [0.5, 3.0, 5.0, 10.1])
     end
+
+    @testset "merge! hmin" begin
+		h1 = PairingMinHeap([1, 8, 3, 5])
+		h2 = PairingMinHeap([9, 3, 4, 2])
+		h = merge!(h1, h2)
+		@test isequal(extract_all!(h), [1, 2, 3, 3, 4, 5, 8, 9])
+	end
+
+    @testset "merge! hmax" begin
+		h1 = PairingMaxHeap([1, 8, 3, 5])
+		h2 = PairingMaxHeap([9, 3, 4, 2])
+		h = merge!(h1, h2)
+		@test isequal(extract_all!(h), [9, 8, 5, 4, 3, 3, 2, 1])
+    end
+
+    @testset "internal nil functions" begin
+        h = PairingMinHeap([1])
+        @test pairing_isnil(h.root.next)
+        @test !pairing_isnil(h.root)
+    end
+
 
 end # @testset PairingHeap
 

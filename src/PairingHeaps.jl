@@ -27,8 +27,6 @@ end
 
 const PairingHeapLink{T} = Union{PairingHeapNil{T}, PairingHeapNode{T}}
 
-promote_rule(::Type{PairingHeapNode{T1}}, ::Type{PairingHeapNode{T2}}) where {T1, T2} = promote_type(T1, T2)
-
 #################################################
 #
 #   core implementation
@@ -157,7 +155,7 @@ end
 Returns a heap that is a and b combined. 
 """
 function merge!(a::PairingHeap{T, Comp}, b::PairingHeap{T, Comp}) where {Comp, T}
-	tmp = PairingHeap{promote_type(T1, T2), Comp}()
+	tmp = PairingHeap{T, Comp}()
 	tmp.root = _pairing_heap_merge!(Comp(), a.root, b.root)
 	tmp.length = length(a) + length(b)
 	tmp
@@ -179,7 +177,7 @@ function pop!(h::PairingHeap{T}) where T
     # extract root
     root = h.root
 	if typeof(root) == PairingHeapNil{T}
-		error("Error, trying to pop an empty heap.")
+		throw(ArgumentError("Error, trying to pop an empty heap."))
 		return 
 	end
     v = root.value
