@@ -10,4 +10,4 @@ matrix:
 notifications:
     email: false
 after_success:
-    - julia -e 'using Pkg; cd(Pkg.dir("PairingHeap")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+    - julia -e 'using Pkg; cd(Pkg.dir("PairingHeaps")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
